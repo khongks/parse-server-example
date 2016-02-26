@@ -10,13 +10,40 @@ if (!databaseUri) {
   console.log('DATABASE_URI not specified, falling back to localhost.');
 }
 
-var api = new ParseServer({
+var parseConfig = {
   databaseURI: databaseUri || 'mongodb://localhost:27017/dev',
   cloud: process.env.CLOUD_CODE_MAIN || __dirname + '/cloud/main.js',
   appId: process.env.APP_ID || 'myAppId',
   masterKey: process.env.MASTER_KEY || '', //Add your master key here. Keep it secret!
   serverURL: process.env.SERVER_URL || 'http://localhost:1337'  // Don't forget to change to https if needed
-});
+}
+
+// Optional Keys
+if (process.env.FILE_KEY) {
+  parseConfig.fileKey = process.env.FILE_KEY;
+}
+
+if (process.env.CLIENT_KEY) {
+  parseConfig.clientKey = process.env.CLIENT_KEY;
+}
+
+if (process.env.JS_KEY) {
+  parseConfig.javascriptKey = process.env.JS_KEY;
+}
+
+if (process.env.REST_KEY) {
+  parseConfig.restAPIKey = process.env.REST_KEY;
+}
+
+if (process.env.DOTNET_KEY) {
+  parseConfig.dotNetKey = process.env.DOTNET_KEY;
+}
+
+if (process.env.FACEBOOK_APP_IDS) {
+  parseConfig.facebookAppIds = process.env.FACEBOOK_APP_IDS
+}
+
+var api = new ParseServer(parseConfig);
 // Client-keys like the javascript key or the .NET key are not necessary with parse-server
 // If you wish you require them, you can set them as options in the initialization above:
 // javascriptKey, restAPIKey, dotNetKey, clientKey
